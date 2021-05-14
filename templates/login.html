@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}CloudStorage{% endblock %}</title>
+{#        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">#}
+        <link href="{% static 'login.css' %}" rel="stylesheet">
+    </head>
+<!-- 1100 x 700 -->
+<body>
+
+
+    <div class="popup">
+
+        <div class="leftpart">
+            <form action="{% url 'home' %}" method="post" id="login">
+                {% csrf_token %}
+                <h1>CloudStorage</h1>
+                {% if message %}
+                    <div>{{ message }}</div>
+                {% endif %}
+
+                <div class="form-block">
+                    <div class="userlogo"></div>
+                    <input autofocus type="text" name="username" placeholder="Username" autocomplete="off">
+                </div>
+
+                <div class="form-block">
+                    <div class="passlogo"></div>
+                    <input type="password" name="password" placeholder="Password">
+                </div>
+
+                <div class="form-block2">
+                    <label>Login<input form="login" class="login_btn" hidden type="submit" value="Login"></label>
+                </div>
+            </form>
+            <br>
+            <span>Don't have an account? <a href="{% url 'register' %}">Register here.</a></span>
+        </div>
+        <div class="rightpart">
+        </div>
+    </div>
+
+
+
+
+</body>

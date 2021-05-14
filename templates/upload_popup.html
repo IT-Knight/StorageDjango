@@ -1,0 +1,43 @@
+
+<div id="upload_popup" class="hidden">
+    <form id="upload_files_form" action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+        <div class="close_ico_wrapper"><div class="close_ico" onclick="close_upload_popup()"></div></div>
+        {% csrf_token %}
+        <input type="text" name="current_dir_webpath" hidden value="{{ current_dir_webpath }}">
+        <div class="drop-zone">
+            <span class="drop-zone__prompt">Drop files here or click to upload</span>
+            <div id="drop_zone_file_list1">
+
+
+            </div>
+            <input type="file" hidden form="upload_files_form" multiple name="files" class="drop-zone__input">
+        </div>
+        <progress value="50" max="100"><span>0%</span></progress>
+        <div class="upload_form_buttons_block">
+            <label>Upload Files<button hidden type="submit">Accept upload</button></label>
+        </div>
+    </form>
+
+{#            <span>Status:</span>#}
+</div>
+
+
+<div id="upload_popup" class="hidden">
+    <form id="upload_files_form" action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+        <div class="close_ico" onclick="close_upload_popup()"></div>
+        {% csrf_token %}
+        <input type="text" name="current_dir_webpath" hidden value="{{ current_dir_webpath }}">
+        <div class="drop-zone">
+            <span class="drop-zone__prompt">Drop files here or click to upload</span>
+            <div id="drop_zone_file_list1">
+            </div>
+            <input type="file" hidden form="upload_files_form" multiple name="files" class="drop-zone__input">
+        </div>
+        <div class="upload_form_buttons_block">
+            <label>Upload Files<button hidden onclick="submit_upload()">Accept upload</button></label>
+        </div>
+    </form>
+
+            <progress value="0" max="100"><span>0%</span></progress>
+            <span>Status:</span>
+</div>

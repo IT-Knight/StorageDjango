@@ -1,0 +1,149 @@
+body {
+    display: flex;
+    /*position: fixed;*/
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+a {
+    text-decoration: underline;
+    color: #007bff;
+    /*font-size: ;*/
+}
+
+.popup {
+    display: flex;
+    min-width: 250px;
+    width: 100%;
+    height: 100%;
+    max-width: 1100px;
+    max-height: 700px;
+}
+
+.leftpart, .rightpart {
+    display: flex;
+    flex-direction: column;
+    padding-top: 50px;
+    padding-left: 50px;
+    width: 50%;
+}
+@media (min-width: 480px) and (max-width: 1100px) {
+    body {
+        align-items: flex-start;
+        justify-content: unset;
+    }
+    .rightpart {
+        display: none;
+    }
+    .popup {
+        justify-content: center;
+    }
+    .leftpart {
+        padding-left: 0;
+    }
+}
+@media (min-width: 280px) and (max-width:479px) {
+    body {
+        align-items: flex-start;
+        padding-left: 10px;
+    }
+    .rightpart {
+        display: none;
+    }
+    .popup {
+        justify-content: center;
+        justify-items: center;
+
+    }
+    .leftpart {
+        padding-left: 0;
+        padding-top: 25px;
+        min-width: 250px;
+        width: 100%;
+        justify-content: center;
+        justify-items: center;
+    }
+}
+
+.form-block {
+    display: flex;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    margin: 11px 0;
+    padding: 0;
+    height: calc(1.5em + .75rem + 4px);
+    /*width: 65%;*/
+    min-width: 250px;
+    align-items: center;
+}
+.userlogo {
+    width: 50px;
+    height: calc(1.5em + .75rem + 2px);
+    background: url("../static/image/Userlogo.png") center center no-repeat;
+    background-size: 30px;
+    border-right: 1px solid #ced4da;
+}
+.passlogo {
+    width: 50px;
+    height: calc(1.5em + .75rem + 2px);
+    background: url("../static/image/Passwordlogo.png") center center no-repeat;
+    background-size: 30px;
+    border-right: 1px solid #ced4da;
+}
+input[type=text] {
+    text-indent: 5px;
+    border: none;
+    border-radius: 0 .25rem .25rem 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    background: white;
+    box-shadow: none;
+}
+input[type=password] {
+    text-indent: 5px;
+    border: none;
+    border-radius: 0 .25rem .25rem 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    background: white;
+    box-shadow: none;
+}
+
+#login {
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    width: 65%;
+    justify-content: flex-end;
+}
+.form-block2 {
+    display: flex;
+    margin: 11px 0;
+    padding: 0;
+    height: calc(1.5em + .75rem + 4px);
+    min-width: 250px;
+    align-items: center;
+    justify-content: flex-end;
+}
+label {
+    display: flex;
+    width: 90px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    height: 40px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    background: #007bff;
+    border-color: #007bff;
+}

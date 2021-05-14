@@ -1,0 +1,225 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <title>FStorage</title>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <meta name="viewport" content="width=1170, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /> -->
+    <!-- <meta name="viewport" content="width=1170, initial-scale=1.0, maximum-scale=1.0" /> -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'upload_popup.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+    crossorigin="anonymous">
+
+</head>
+
+<body>
+<div class="wrapper">
+    <header class="header">
+        <div class="container1">
+            <div class="header__row1">
+                <span>Logged in as <b><u>{{ user.username }}</u></b> | <a href="{% url 'logout' %}">Logout</a> |</span>
+            </div>
+            <div class="header__row2">
+                <h2>Project1</h2>
+            </div>
+            <div class="header__row3"></div>
+        </div>
+    </header>
+    <main class="page">
+        <div class="container2">
+            <div class="header__row2_1">
+                <div class="path">
+                    <a href="{% url 'main' %}" title="Go to Main directory"><b>Main</b></a><b> /</b>
+                </div>
+                <div class="extra_path"><b>{{ extra_path }}</b>
+                </div>
+                <div class="btn_upload">
+                    <label><button onclick="open_upload_popup()" hidden>Upload</button></label>
+                    <div id="upload_popup" class="hidden">
+                        <form id="upload_files_form" action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+                            <div class="close_ico_wrapper"><div class="close_ico" onclick="close_upload_popup()"></div></div>
+                            {% csrf_token %}
+                            <input type="text" name="current_dir_webpath" hidden value="{{ current_dir_webpath }}">
+                            <div class="drop-zone">
+                                <span class="drop-zone__prompt">Drop files here or click to upload</span>
+                                <div id="drop_zone_file_list1">
+                                </div>
+                                <input type="file" hidden form="upload_files_form" multiple name="files" class="drop-zone__input">
+                            </div>
+{#                            <progress value="50" max="100"><span>0%</span></progress>#}
+                            <div class="upload_form_buttons_block">
+                                <label>Upload Files<button hidden type="submit">Accept upload</button></label>
+                            </div>
+                        </form>
+                    {#            <span>Status:</span>#}
+                    </div>
+
+                </div>
+                <div class="create_dir_btn">
+                    <div id="create_dir_block" class="hidden">
+                        <form action="{% url 'create_dir' %}" method="post" id="create_dir_form">
+                            {% csrf_token %}
+                            <div class="close_ico" onclick="close_createdir_popup()"></div>
+                            <span style="font-size: 1.5em; font-weight: bolder">New directory name</span>
+                            <input type="text" name="current_dir_webpath" value="{{ current_dir_webpath }}" hidden>
+                            <input type="text" name="new_dir_name">
+                            <label>Create<input type="submit" hidden onclick="close_createdir_popup()" value="Create"></label>
+                        </form>
+                    </div>
+
+                    <label><button onclick="open_createdir_popup()" hidden>Create directory</button></label>
+                </div>
+                <div class="btn_logs">
+                    <label><button hidden onclick="open_actionlogs_popup()">Action Logs</button></label>
+                    <div id="action_log_block" class="hidden">
+                        <div class="actionlog_popup">
+                            <div class="close_ico_wrapper"><div class="close_ico" onclick="close_actionlogs_popup()"></div></div>
+                            <div class="pre_event_table">
+                            {% if not current_dir_webpath %}
+                                <span><b>History for directory</b> <b>"</b>/<b>"</b></span>
+                            {% else %}
+                                <span><b>History for directory</b> <b>"</b>/{{ current_dir_webpath }}<b>"</b></span>
+                            {% endif %}
+                            <label>Clear log<button hidden onclick="clear_log('{{ current_dir_webpath }}')"></button></label>
+                                <div class="event_table">
+                                    <div class="head_log_block">
+                                        <div class="action_head_item1">Event</div>
+                                        <div class="action_head_item2">Data</div>
+                                    </div>
+                                    {% for log in action_logs %}
+                                        <div class="action_table_row">
+                                            <div class="action_item1">{{ log.log_string }}</div>
+                                            <div class="action_item2">{{ log.date|date:"d.m.Y H:i" }}</div>
+                                        </div>
+                                    {% empty %}
+                                        &nbsp&nbsp&nbspNo action has been taken yet
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="header__row2_2">
+                <div class="btn2 btn_upload2">
+                    <label><button onclick="open_upload_popup()" hidden>Upload</button></label>
+                </div>
+                <div class="btn2 create_dir_btn2">
+                    <div id="create_dir_block2" class="hidden">
+                        <form action="{% url 'create_dir' %}" method="post" id="create_dir_form">
+                            {% csrf_token %}
+                            <div class="close_ico" onclick="close_createdir_popup()"></div>
+                            <span style="font-size: 1.5em; font-weight: bolder">New directory name</span>
+                            <input type="text" name="current_dir_webpath" value="{{ current_dir_webpath }}" hidden>
+                            <input type="text" name="new_dir_name">
+                            <label>Create<input type="submit" hidden onclick="close_createdir_popup()" value="Create"></label>
+                        </form>
+                    </div>
+
+                    <label> <button onclick="open_createdir_popup()" hidden>Create directory</button></label>
+                </div>
+                <div class="btn2 btn_logs2">
+                    <label ><button hidden onclick="open_actionlogs_popup()">Action Logs</button></label>
+                    <div id="action_log_block2" class="hidden">
+                        <div class="actionlog_popup">
+                            <div class="close_ico_wrapper"><div class="close_ico" onclick="close_actionlogs_popup()"></div></div>
+                            <div class="pre_event_table">
+                            {% if not current_dir_webpath %}
+                                <span><b>History for directory</b> <b>"</b>/<b>"</b></span>
+                            {% else %}
+                                <span><b>History for directory</b> <b>"</b>/{{ current_dir_webpath }}<b>"</b></span>
+                            {% endif %}
+                            <label>Clear log<button hidden onclick="clear_log('{{ current_dir_webpath }}')"></button></label>
+                                <div class="event_table">
+                                    <div class="head_log_block">
+                                        <div class="action_head_item1">Event</div>
+                                        <div class="action_head_item2">Data</div>
+                                    </div>
+                                    {% for log in action_logs %}
+                                        <div class="action_table_row">
+                                            <div class="action_item1">{{ log.log_string }}</div>
+                                            <div class="action_item2">{{ log.date|date:"d.m.Y H:i" }}</div>
+                                        </div>
+                                    {% empty %}
+                                        &nbsp&nbsp&nbspNo action has been taken yet
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="storage_interface">
+{#            <form id="download_chosen" onsubmit="download_chosen()" hidden></form>#}
+                <div class="interface_block">
+                    <div class="item0-a">Name</div>
+                    <div class="item0-b">Size</div>
+                    <div class="item0-c">Modified</div>
+                    <div class="item0-d"><img class='lock' src="{% static './image/lock2.png' %}" alt="is_locked"></div>
+                    <div class="item0-e"><img class="download_top" src="{% static './image/download_top2.png' %}" alt="download_link"></img></div>
+                </div>
+
+            {% if back_dir %}
+                <div class="interface_block">
+                   <div class="folder_item"></div>  
+                    <a href="{{ back_dir }}" class="folder_link" title='Parent directory'><div class="item-a">..</div></a>
+                    <div class="item-b"></div>
+                    <div class="item-c"></div>
+                    <div class="item-d"></div>
+                   <div class="item-e"></div>
+                </div>
+            {% endif %}
+
+                {% for obj in folders_and_files %}
+                    <div class="interface_block" data-type="{{ obj.type }}" data-id="{{ obj.id }}">
+                        {% if obj.type == 'file' %}
+{#                            <div class="item_checkbox"><input type="checkbox" form="download_chosen" data-file="{{ current_dir_fullwebpath|add:"/"|add:obj.name }}"></div>#}
+                            <div class="file_item" title="{{ obj.name }}"></div>
+                            <div class="item-a" title="{{ obj.name }}">{{ obj.showname }}</div>
+                            <div class="item-b">{{ obj.size }}</div>
+                            <div class="item-c">{{ obj.modify_date| date:"d.m.Y H:i" }}</div>
+                            {% if obj.locked == 'True' %}
+                                <div class="item-d">{{ obj.locked }}</div>
+                            {% else %}
+                                <div class="item-d"></div>
+                            {% endif %}
+                        {% if not current_dir_webpath %}
+                                <div class="item-e"><a href="{% url 'download' data_id=obj.id %}" title="download" download class="download_link"></a></div>
+                            {% else %}
+                                <div class="item-e"><a href="{% url 'download' data_id=obj.id %}" title="download" download class="download_link"></a></div>
+                            {% endif %}
+                                    <!-- download ico + action_panel -->
+                            <div class="item-delete" title="Delete file"  onclick="delete_process('{{ current_dir_webpath|add:'/'|add:obj.name }}', '{{ obj.id }}', '{{ obj.webpath }}')"></div>
+                        {% else %}
+                            <div class="folder_item" title="{{ obj.name }}"></div>
+                            <a href="{% url 'submain' dir_webpath=obj.webpath %}" class="folder_link"><div class="item-a" data-type="folder" title="{{ obj.name }}">{{ obj.showname }}</div></a>
+{#                            <div class="item-d">{{ obj.locked }}</div>#}
+{#                            <!-- action_panel -->                     #}
+                            <div class="item-delete" title="Delete folder" onclick="delete_process('{{ current_dir_webpath|add:'/'|add:obj.name }}', '{{ obj.id }}', '{{ obj.webpath }}')"></div>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                {% endfor %}
+            </div>
+
+        </div>
+    </main>
+</div>
+
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython.min.js"></script>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.9.0/brython_stdlib.min.js"></script>#}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{#<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"#}
+{#crossorigin="anonymous"></script>#}
+<script src="{% static 'main.js' %}"></script>
+<script src="{% static 'upload_popup.js' %}"></script>
+
+</body>
+</html>

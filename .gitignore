@@ -1,0 +1,8 @@
+.idea/
+Pipfile
+Pipfile.lock
+config/__pycache__
+CloudStorage3/__pycache__
+CloudStorage3/migrations
+storage/
+db.sqlite3
