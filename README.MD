@@ -55,7 +55,6 @@ models.py - contains 5 models and 3 signal recievers for File and Folder models.
 urls.py - contains all the web-paths
 views.py - contains all the views
 tests.py - contains some basic tests:
-```
 class StorageTestCase(TestCase):
  - test_register
  - test_register_pass_no_match
@@ -67,19 +66,31 @@ class StorageTestCase(TestCase):
  - test_download
  - test_delete
  - test_clear_log
-```
 
 ```
 **How to run your application.**
 ```
 Nothing unusual needed.
 - Install django module, version 3.2.2 was used.
-- Run the "python manage.py makemigrations"
+
+For Windows 10:
+- Run "python manage.py makemigrations"
 - next "python manage.py migrate"
 - "python manage.py runserver"
 - register or create super-user
 - login
+
+For Linux Ubuntu:
+- Install django module, version 3.2.2 was used.
+- Run "python3 manage.py makemigrations CloudStorage3"
+- Run "python3 manage.py makemigrations"
+- next "python3 manage.py migrate"
+- "python3 manage.py runserver"
+- register or create super-user
+- login
+
 ```
 
 **Any other additional information the staff should know about your project.**
-The project was tested on Windows 10 and on Linux environment. 
+The project was first developed and tested on Windows 10 on Google Chrome. 
+On Linux environment. 

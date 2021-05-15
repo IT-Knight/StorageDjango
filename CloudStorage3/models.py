@@ -23,13 +23,22 @@ class ActionLog(models.Model):
 def user_directory_path(instance, filename):
 
     path = instance.parent_folder.webpath
-    if path == "/":
-        print('user_directory_path: {0}\{1}'.format(instance.data.owner.username, filename))
-        return '{0}\{1}'.format(instance.data.owner.username, filename)
-    else:
-        path = path.replace('/', '\\')
-        print('user_directory_path: {0}{1}\{2}'.format(instance.data.owner.username, path, filename))
-        return '{0}{1}\{2}'.format(instance.data.owner.username, path, filename)
+    if os.name == "nt":
+        if path == "/":
+            print('user_directory_path: {0}\{1}'.format(instance.data.owner.username, filename))
+            return '{0}\{1}'.format(instance.data.owner.username, filename)
+        else:
+            path = path.replace('/', '\\')
+            print('user_directory_path: {0}{1}\{2}'.format(instance.data.owner.username, path, filename))
+            return '{0}{1}\{2}'.format(instance.data.owner.username, path, filename)
+    elif os.name == "posix":
+        if path == "/":
+            print('user_directory_path: {0}/{1}'.format(instance.data.owner.username, filename))
+            return '{0}/{1}'.format(instance.data.owner.username, filename)
+        else:
+            path = path.replace('\\', '/').replace('\\\\', '/')
+            print('user_directory_path: {0}{1}/{2}'.format(instance.data.owner.username, path, filename))
+            return '{0}{1}/{2}'.format(instance.data.owner.username, path, filename)
 
 
 class File(models.Model):
