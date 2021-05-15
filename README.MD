@@ -54,10 +54,21 @@ admin.py - register models for admin panel.
 models.py - contains 5 models and 3 signal recievers for File and Folder models.
 urls.py - contains all the web-paths
 views.py - contains all the views
+tests.py - contains some basic tests:
+```
+class StorageTestCase(TestCase):
+ - test_register
+ - test_register_pass_no_match
+ - test_login
+ - test_create_dirs
+ - test_create_subdirs
+ - test_upload_files
+ - test_upload_to_subdir
+ - test_download
+ - test_delete
+ - test_clear_log
+```
 
-main.css, main.js - main.html
-login.css - login.html
-register.css - register.html
 ```
 **How to run your application.**
 ```
@@ -71,5 +82,4 @@ Nothing unusual needed.
 ```
 
 **Any other additional information the staff should know about your project.**
-
-None.
+The project was tested on Windows 10 and on Linux environment. 

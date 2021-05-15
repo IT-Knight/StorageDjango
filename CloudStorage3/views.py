@@ -92,6 +92,7 @@ def download(request, data_id):
     filepath = file_obj.file.path
     print(filepath)
     response = FileResponse(open(filepath, 'rb'))
+    response['Content-Disposition'] = f'inline; filename="{data_obj.name}"'  # handle the original name
     print(response)
     print(response.filename)
     print(response.headers)
@@ -178,7 +179,7 @@ def delete_logs(request, webpath):
         if '/' not in webpath:
             parent_folder_name = webpath
         else:
-            parent_folder_name = dir_webpath.split('/')[-1]
+            parent_folder_name = webpath.split('/')[-1]
 
     parent_folder_dataobject = StorageData.objects.get(owner=user, type="folder", webpath=parent_dir_webpath,
                                                        name=parent_folder_name)
