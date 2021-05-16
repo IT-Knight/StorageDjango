@@ -1,11 +1,15 @@
 html {
-    width: 100%;
+    /*width: 100%;*/
+    background-color: #F3F3F3;
 }
 
 body {
     margin: 0;
     /*min-width: 1170px;*/
     /*background-color: ;*/
+    min-height: 100%;
+    height: 100%;
+    background-color: #F3F3F3;
 }
 
 .wrapper {
