@@ -8,6 +8,7 @@ from django.conf import settings
 # Create your views here.
 from CloudStorage3.models import User, StorageData, Folder, File, ActionLog
 
+
 STORAGE_BASE_DIR = settings.BASE_DIR / settings.MEDIA_ROOT
 
 
@@ -92,9 +93,8 @@ def download(request, data_id):
     filepath = file_obj.file.path
     print(filepath)
     response = FileResponse(open(filepath, 'rb'))
-    response['Content-Disposition'] = f'inline; filename="{data_obj.name}"'  # handle the original name
+    response['Content-Disposition'] = f'inline; filename="{data_obj.name}"'  # handle the original file name
     print(response)
-    print(response.filename)
     print(response.headers)
     return response
 
@@ -103,7 +103,7 @@ class MainInterfaceView(View):
 
     def get(self, request, dir_webpath=None):
 
-        user = get_object_or_404(User, id=request.user.id)  # That's like @login_required, returns 404 not found
+        user = get_object_or_404(User, id=request.user.id)  # That works like @login_required, returns 404 not found
 
         print('dir_webpath', type(dir_webpath), dir_webpath)
         if not dir_webpath:
@@ -129,8 +129,12 @@ class MainInterfaceView(View):
         print('back_dir_path', back_dir_path)
         print('extra_path: ', extra_path)
 
-        user_folders_and_files = list(StorageData.objects.filter(owner=user, type="folder", parent_folder_webpath=parent_dir_webpath).order_by('name'))
-        user_files = list(StorageData.objects.filter(owner=user, type="file", parent_folder_webpath=parent_dir_webpath).order_by('name'))
+        user_folders_and_files = list(StorageData.objects.filter(owner=user,
+                                                                 type="folder",
+                                                                 parent_folder_webpath=parent_dir_webpath).order_by('name'))
+        user_files = list(StorageData.objects.filter(owner=user,
+                                                     type="file",
+                                                     parent_folder_webpath=parent_dir_webpath).order_by('name'))
         user_folders_and_files += user_files
 
         for obj in user_folders_and_files:
@@ -230,14 +234,13 @@ class FolderManager(View):
         data = request.POST
 
         current_dir_webpath = data['current_dir_webpath']
-        if current_dir_webpath == 'None':  # why str type?! - that means Null from database goes into 'None' on render
+        if current_dir_webpath == 'None':  # why str type? - that means Null from database goes into 'None' on render
             current_dir_webpath = None
         new_dir_name = data['new_dir_name']  # set_dir_name
 
         user = get_object_or_404(User, id=request.user.id)
         username = request.user.username
 
-        # request.path  # /create_dir
         print('current_dir_webpath: ', current_dir_webpath, type(current_dir_webpath))
 
         if not current_dir_webpath:
@@ -268,23 +271,22 @@ class FolderManager(View):
 
         parent_folder_dataobj = StorageData.objects.get(owner=user, webpath=parent_folder_webpath)
         parent_folder_obj = Folder.objects.get(name=parent_folder_name, webpath=parent_folder_webpath, data=parent_folder_dataobj)
+        try:
+            data_object.save()
 
-        data_object.save()
-        Folder(name=new_dir_name, webpath=new_webpath, data=data_object, parent_folder=parent_folder_obj).save()
+            Folder(name=new_dir_name, webpath=new_webpath, data=data_object, parent_folder=parent_folder_obj).save()
 
-        log_string = f'Created directory "{new_dir_name}"'
-        ActionLog(account=user, log_string=log_string, parent_folder=parent_folder_obj).save()
+            log_string = f'Created directory "{new_dir_name}"'
+            ActionLog(account=user, log_string=log_string, parent_folder=parent_folder_obj).save()
 
-        print(current_dir_webpath)
+            print(current_dir_webpath)
+        except IntegrityError:  # if folder exists - do nothing
+            pass
 
         if current_dir_webpath is None:
             return redirect('main')
         else:
             return redirect('submain', dir_webpath=current_dir_webpath)
-
-    def patch(self, request):
-        data = request.PATCH
-        return
 
 
 class Register(View):

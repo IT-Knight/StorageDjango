@@ -69,23 +69,24 @@ class StorageTestCase(TestCase):
  - test_download
  - test_delete
  - test_clear_log
-
 ```
+
 **How to run your application.**
 ```
 - Install django module, version 3.2.2 was used.
-- Run "python3 manage.py makemigrations CloudStorage3"
-- next "python3 manage.py migrate"
-- "python3 manage.py runserver"
-- register or create super-user
+- Run "python manage.py makemigrations CloudStorage3"
+- next "python manage.py migrate"
+- "python manage.py runserver"
+- register or create superuser
 - login
 ```
 
 **Any other additional information the staff should know about your project.**
-The project was first developed and tested on Windows 10 on Google Chrome, where the front-end seemed well.
-In Firefox it has a really little bug of coloring the background. That's because of unpredictable behavior of imported bootstrap. In Chrome it's well.
-The app tested also on Linux Ubuntu 20.04 on Firefox - it goes like on Windows.
-Mobile-responsability was tested by browser-emulator of device.
-It doesn't has size control for uploaded files, so it's depends on free local memory. Big files can be uploaded too, but there's no progress bar, so maybe some waiting can be needed. I had 1 GB uploaded around a minute.
 
-Finally, i'd like to say that the project is far from perfect(it can have endless improvements), but should be good anough for last cs50 Web project.
+The project was first developed and tested on Windows 10 on Google Chrome, where the front-end seemed well.
+In Firefox somewhy may ocur little bug of coloring the background in grey, and may not. I found out it's becouse of unpredictble behavior of imported bootsrap.
+The app tested also on Linux Ubuntu 20.04 on Firefox and was successful.
+Mobile-responsability was tested by browser-emulator of device. Mobile-responsability starts from 815px width, goes to 320px, and finishes around ~280px. Over 815 is a desktop version. The idea was to handle straight 320, 480, middle cases for tablet-pad, and desktop.
+It doesn't has size control for uploaded files, so it's depends on free local memory. Big files can be uploaded too, but there's no progress bar, so maybe some waiting will be needed. I had 1 GB file uploaded on around a minute.
+
+Finally, i'd like to say that the project is far from perfect(it can have endless improvements), but should be good anough for final cs50 Web project.

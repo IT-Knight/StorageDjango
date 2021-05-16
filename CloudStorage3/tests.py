@@ -7,7 +7,7 @@ from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 # Create your tests here.
-from CloudStorage3.models import User, Folder, File, StorageData
+from CloudStorage3.models import User, Folder, File, StorageData, ActionLog
 
 
 class StorageTestCase(TestCase):
@@ -176,3 +176,67 @@ class StorageTestCase(TestCase):
 
         storage_dir = os.path.join(dir_abs_path, 'storage\\')
         shutil.rmtree(storage_dir + 'user4')
+
+    def test_delete(self):
+        user = User.objects.create(username="user4", password="1234")
+        self.client.force_login(user=user)
+        dir_abs_path = os.getcwd()
+        base_relative_path1 = 'static\\image'
+        dist_dir = os.path.join(dir_abs_path, base_relative_path1)
+        fl_pre = os.listdir(dist_dir)
+        file_list = [dist_dir + '\\' + x for x in os.listdir(dist_dir)]
+        data = {}
+        files = []
+
+        for file in file_list:
+            fp = open(file, 'rb')
+            files.append(fp)
+        data['files'] = files
+        data['current_dir_webpath'] = 'None'
+
+        self.client.post('/upload', data)
+
+        res_files = [x.name for x in StorageData.objects.filter(owner=user, type="file")]
+
+        self.assertEqual(len(file_list), File.objects.all().count())
+
+        for file in fl_pre:
+            file_obj = StorageData.objects.get(name=file, type='file', owner=user)
+            res = self.client.get('/delete/' + str(file_obj.id))
+            self.assertEqual(res.status_code, 204)
+
+            self.assertIn(file, res_files)
+
+    def test_clear_logs(self):
+        user = User.objects.create(username="user4", password="1234")
+        self.client.force_login(user=user)
+        dir_abs_path = os.getcwd()
+        base_relative_path1 = 'static\\image'
+        dist_dir = os.path.join(dir_abs_path, base_relative_path1)
+        fl_pre = os.listdir(dist_dir)
+        file_list = [dist_dir + '\\' + x for x in os.listdir(dist_dir)]
+        data = {}
+        files = []
+
+        for file in file_list:
+            fp = open(file, 'rb')
+            files.append(fp)
+        data['files'] = files
+        data['current_dir_webpath'] = 'None'
+
+        # create some upload, delete, and create dir logs.
+        self.client.post('/upload', data)
+
+        for file in fl_pre:
+            file_obj = StorageData.objects.get(name=file, type='file', owner=user)
+            self.client.get('/delete/' + str(file_obj.id))
+
+        self.client.post('/create_dir', data={"new_dir_name": f"Dir_name1", 'current_dir_webpath': 'None'})
+
+        self.assertTrue(any(ActionLog.objects.all()))
+
+        res = self.client.post('/delete_logs/None')
+
+        self.assertEqual(res.status_code, 204)
+
+        self.assertFalse(any(ActionLog.objects.all()))
