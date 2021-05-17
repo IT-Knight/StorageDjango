@@ -83,10 +83,10 @@ class StorageTestCase(TestCase):
 
 **Any other additional information the staff should know about your project.**
 
--The project was first developed and tested on Windows 10 on Google Chrome, where the front-end seemed well.
--In Firefox somewhy may ocur little bug of coloring the background in grey, and may not. I found out it's becouse of unpredictble behavior of imported bootsrap.
--The app tested also on Linux Ubuntu 20.04 on Firefox and was successful.
--Mobile-responsability was tested by browser-emulator of device. Mobile-responsability starts from 815px width, goes to 320px, and finishes around ~280px. Over 815 is a desktop version. The idea was to handle straight 320, 480, middle cases for tablet-pad, and desktop.
--It doesn't has size control for uploaded files, so it's depends on free local memory. Big files can be uploaded too, but there's no progress bar, so maybe some waiting will be needed. I had 1 GB file uploaded on around a minute.
+- The project was first developed and tested on Windows 10 on Google Chrome, where the front-end seemed well.
+- In Firefox somewhy may ocur little bug of coloring the background in grey, and may not. I found out it's becouse of unpredictble behavior of imported bootsrap.
+- The app tested also on Linux Ubuntu 20.04 on Firefox and was successful.
+- Mobile-responsability was tested by browser-emulator of device. Mobile-responsability starts from 815px width, goes to 320px, and finishes around ~280px. Over 815 is a desktop version. The idea was to handle straight 320, 480, middle cases for tablet-pad, and desktop.
+- It doesn't has size control for uploaded files, so it's depends on free local memory. Big files can be uploaded too, but there's no progress bar, so maybe some waiting will be needed. I had 1 GB file uploaded on around a minute.
 
 Finally, i'd like to say that the project is far from perfect(it can have endless improvements), but should be good anough for final cs50 Web project.
